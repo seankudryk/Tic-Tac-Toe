@@ -1,18 +1,23 @@
-//gameboard object storing methods to get, set, and update the gameboard
 const gameboard = (function () {
     let board = [];
 
-    const getBoard = () => board;
+    const getBoard = () => {
+        console.log(board);
+        board;
+    }
 
     const resetBoard = () => {
         board = [[null, null, null], [null, null, null], [null, null, null]];
-        console.log(board);
     }
 
-    const updateBoard = () => {
-        console.log("This is a placeholder function");
+    const updateBoard = (row, column, symbol) => {
+        if (board[row][column] !== null) {
+            console.log("Not a valid selection");
+            return;
+        } else {
+            return board[row][column] = symbol;
+        }
     }
-
     return { getBoard, resetBoard, updateBoard };
 })();   
 
@@ -27,8 +32,6 @@ const players = [
     }
 ];
 
-//gameSetup function to createUser(s) and resetBoard
-
 const playGame = (function () {
     //write function to createUser, taking a playerName input, and a playerSymbol input
 
@@ -39,20 +42,29 @@ const playGame = (function () {
     let playerTurn = players[0];
 
     //initiate a player turn - we will call this method to "take turns" and actually play the game in console
-    const playRound = () => {
-        console.log(`it is ${playerTurn.name}'s turn`);
-        //what do we need to check?
-            //which player's turn is it?
-            //which space on the board does the player wish to place their symbol?
-            
-            
+    const playRound = (row, column) => {
+        // if (!row || !column) {
+        //     console.log("Please enter both a row and column value");
+        //     return;
+        // }
 
-            //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
-            playerTurn = playerTurn === players[0] ? players[1] : players[0];
+        console.log(`It is ${playerTurn.name}'s turn`);
+        //which space on the board does the player wish to place their symbol?
+        gameboard.updateBoard(row, column, playerTurn.symbol);
+            
+        //call checkForWin function which contains the win conditions for the game
+            //if checkForWin, then declare winner and prompt user to play again
+
+        //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
+        playerTurn = playerTurn === players[0] ? players[1] : players[0];
     }
         return { playRound };
     }
 )();
 
-console.log(playGame.playRound());
+gameboard.getBoard();
+// playGame.playRound(1, 2);
+// playGame.playRound(0, 1);
+// playGame.playRound(0, 2);
+// gameboard.getBoard();
 
