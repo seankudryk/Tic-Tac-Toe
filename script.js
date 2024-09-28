@@ -43,24 +43,23 @@ const playGame = (function () {
 
     //initiate a player turn - we will call this method to "take turns" and actually play the game in console
     const playRound = (row, column) => {
-        // if (!row || !column) {
-        //     console.log("Please enter both a row and column value");
-        //     return;
-        // }
-
-        console.log(`It is ${playerTurn.name}'s turn`);
-        //which space on the board does the player wish to place their symbol?
-        gameboard.updateBoard(row, column, playerTurn.symbol);
-            
-        //call checkForWin function which contains the win conditions for the game
-            //if checkForWin, then declare winner and prompt user to play again
-
-        //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
-        playerTurn = playerTurn === players[0] ? players[1] : players[0];
-    }
+        if (row === undefined || column === undefined) {
+            console.log("Please enter both a row and column value");
+            return;
+        } else {
+            console.log(`It is ${playerTurn.name}'s turn`);
+            //which space on the board does the player wish to place their symbol?
+            gameboard.updateBoard(row, column, playerTurn.symbol);
+                
+            //call checkForWin function which contains the win conditions for the game
+                //if checkForWin, then declare winner and prompt user to play again
+    
+            //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
+            playerTurn = playerTurn === players[0] ? players[1] : players[0];
+        }
         return { playRound };
     }
-)();
+})();
 
 gameboard.getBoard();
 // playGame.playRound(1, 2);
