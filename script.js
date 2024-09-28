@@ -6,12 +6,19 @@ const gameboard = (function () {
         return board;
     }
 
-    const getCell = (row, column) => {
-        return board[row][column];
+    const checkForWin = () => {
+        //console.log(gameboard.getCell(0, 0), gameboard.getCell(0, 1), gameboard.getCell(0, 2));
+        // if (gameboard.getCell(0, 0) !== null) {
+        //     //check if all values in the same row are equal to value of .getCell(0, 0);
+        //     if (gameboard.getCell(0, 0) === gameboard.getCell(0, 1) && (gameboard.getCell(0, 0) === gameboard.getCell(0, 2))) {
+        //         return "You Win!"
+        //     }
+        // }
+        gameboard.getCell(1, 2);
     }
 
     const resetBoard = () => {
-        board = [["x", "x", "x"], [null, null, null], [null, null, null]];
+        board = [[null, null, null], [null, null, null], [null, null, null]];
     }
     const updateBoard = (row, column, symbol) => {
         if (board[row][column] !== null) {
@@ -21,7 +28,7 @@ const gameboard = (function () {
             return board[row][column] = symbol;
         }
     }
-    return { getBoard, getCell, resetBoard, updateBoard };
+    return { getBoard, checkForWin, resetBoard, updateBoard };
 })();   
 
 const players = [
@@ -47,7 +54,14 @@ const playGame = (function () {
     }
 
     const checkForWin = () => {
-        console.log(gameboard.getCell(1, 2));
+        //console.log(gameboard.getCell(0, 0), gameboard.getCell(0, 1), gameboard.getCell(0, 2));
+        // if (gameboard.getCell(0, 0) !== null) {
+        //     //check if all values in the same row are equal to value of .getCell(0, 0);
+        //     if (gameboard.getCell(0, 0) === gameboard.getCell(0, 1) && (gameboard.getCell(0, 0) === gameboard.getCell(0, 2))) {
+        //         return "You Win!"
+        //     }
+        // }
+        gameboard.getCell(1, 2);
     }
 
     //initiate a player turn - we will call this method to "take turns" and actually play the game in console
