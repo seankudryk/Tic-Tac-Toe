@@ -1,5 +1,5 @@
 const gameboard = (function () {
-    let board = [["x", "x", "x"], [null, null, null], [null, null, null]];
+    let board = [[null, null, null], [null, null, null], [null, null, null]];
 
     const getBoard = () => {
         console.log(board);
@@ -7,44 +7,44 @@ const gameboard = (function () {
     }
 
     const checkForWin = () => {
-        //only check for the following win conditions if cell 0, 0 has a value in it
+       // only check for the following win conditions if cell 0, 0 has a value in it
         if (board[0][0] !== null) {
             //check for win conditions including 0, 0
-            if 
-                //check for win in first row
-                ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) ||
-                //check for win in first column
-                (board[0][0] === board[1][0] && board[0][0] === board[2][0]) ||
-                //check for win in diagonal Top Left to Bottom Right
-                (board[0][0] === board[1][1] && board[0][0] === board[2][2])) 
-            {
-                return "You Win!"
+            if ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[1][0] && board[0][0] === board[2][0]) || (board[0][0] === board[1][1] && board[0][0] === board[2][2])) {
+                return "You Win";
+            } else if (board[1][0] !== null) {
+                if (board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
+                    return "You Win";
+                }
+            } else if (board[2][0] !== null) {
+                if (board[2][0] === board[2][1] || board[2][0] === board[2][2]) {
+                    return "You Win";
+                }
             }
+        //check for win in second row
+        } else if (board[1][0] !== null) {
             
-            else if 
-                //check for win in second row
-                (board[1][0] === board[1][1] && board[1][0] === board[1][2])
-            {
-                return "You Win!";
-            }
-            else if
-                //check for win in third row 
-                ((board[2][0] === board[2][1] && board[2][0] === board[2][2]) ||
-                //check for win diagonal from bottom left to top right
-                (board[2][0] === board[1][1] && board[2][0] === board[0][2])    
-            )
-            {
+            if (board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
                 return "You Win";
             }
-            else if
-                //check for win in second column
-                ((board[0][1]) === (board[1][1]) && (board[0][1] === board[2][1]))
-                //check for win in third column
-
-            {
-                return "You Win"
+        //check for win in third row or diagonal bottom left to top right
+        } else if (board[2][0] !== null) {
+            if ((board[2][0] == board[2][1] && board[2][0] === board[2][2]) || (board[2][0] === board[1][1] && board[2][0] === board[0][2])) {
+                return "You Win";
+            } 
+        //check for win in second column
+        } else if (board[0][1] !== null) {
+            if (board[0][1] === board[1][1] && board[0][1] === board[2][1]) {
+                return "You Win - 3 in a row in the 2nd column";
             }
-
+        //check for win in third column
+        } else if (board[0][2] !== null) {
+            if (board[0][2] === board[1][2] && board[0][2] === board[2][2]) {
+                return "You Win - 3 in a row in the 3rd column";
+            }
+        } 
+        else {
+            return "No winnner yet, keep playing bozo";
         }
     }
 
@@ -96,7 +96,7 @@ const playGame = (function () {
             gameboard.getBoard();
                 
             //call checkForWin function which contains the win conditions for the game
-            gameboard.checkForWin()
+            console.log(gameboard.checkForWin());
                 //if checkForWin, then declare winner and prompt user to play again
     
             //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
@@ -107,7 +107,8 @@ const playGame = (function () {
     return { resetGame, playRound };
 })();
 
+//test case for a win in first row
 
-// playGame.playRound(0, 1);
-// playGame.playRound(0, 2);
+console.log(gameboard.checkForWin());
+
 
