@@ -1,64 +1,41 @@
 const gameboard = (function () {
-    let board = [["p", "f", "y"], ["a", "z", "s"], ["d", null, "w"]];
+    let board = [["x", "q", "s"], ["a", "b", "c"], ["d", null, "f"]];
 
-    const getBoard = () => {
-        return board;
-    }
-
-    // const checkForDraw = () => {
-    //     if (board.every(row => row.every(cell => cell !== null))) {
-    //         console.log(board);
-    //         console.log("It Worked!");
-    //     }
-    // }
+    const getBoard = () => board;
 
     const checkForWin = () => {
        // only check for the following win conditions if cell 0, 0 has a value in it
-        if (board[0][0] !== null) {
-            //check for win conditions including 0, 0
-            if ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[1][0] && board[0][0] === board[2][0]) || (board[0][0] === board[1][1] && board[0][0] === board[2][2])) {
-                return playGame.resetGame();
-            } else if (board[1][0] !== null) {
-                if (board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
-                    return playGame.resetGame();
-                }
-            } else if (board[2][0] !== null) {
-                if (board[2][0] === board[2][1] || board[2][0] === board[2][2]) {
-                    return playGame.resetGame();
-                }
-            }
+        if ((board[0][0] !== null) && ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[1][0] && board[0][0] === board[2][0]) || (board[0][0] === board[1][1] && board[0][0] === board[2][2]))) {
+            console.log("A 0,0 win condition was triggered");
+            return playGame.resetGame("win");
+        }
         //check for win in second row
-        } else if (board[1][0] !== null) {
-
-            if (board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
-                return playGame.resetGame();
-            }
+        else if ((board[1][0] !== null) && ((board[1][0] === board[1][1] && board[1][0] === board[1][2]))) {
+            console.log("A 1,0 win condition was triggered");
+            return playGame.resetGame("win");
+        }
         //check for win in third row or diagonal bottom left to top right
-        } else if (board[2][0] !== null) {
-            if ((board[2][0] == board[2][1] && board[2][0] === board[2][2]) || (board[2][0] === board[1][1] && board[2][0] === board[0][2])) {
-                return playGame.resetGame();
-            } 
+        else if ((board[2][0] !== null) && ((board[2][0] == board[2][1] && board[2][0] === board[2][2]) || (board[2][0] === board[1][1] && board[2][0] === board[0][2]))) { 
+            console.log("A 2,0 win condition was triggered");
+            return playGame.resetGame("win");
+        } 
         //check for win in second column
-        } else if (board[0][1] !== null) {
-            if (board[0][1] === board[1][1] && board[0][1] === board[2][1]) {
-                return playGame.resetGame();
-            }
+        else if ((board[0][1] !== null) && ((board[0][1] === board[1][1] && board[0][1] === board[2][1]))) {
+            console.log("A 0,1 win condition was triggered");
+            return playGame.resetGame("win");
+        }
         //check for win in third column
-        } else if (board[0][2] !== null) {
-            if (board[0][2] === board[1][2] && board[0][2] === board[2][2]) {
-                return playGame.resetGame();
-            }
-        //check if all spaces are !null without a win conidition
-            //call draw, reset game    
-        } else if (board.every(row => row.every(cell => cell !== null))) {
-            console.log("Draw, No Winner");
-            return playGame.resetGame();
-        }
-        else {
-            return "No winnner yet, keep playing bozo";
-        }
-
+        else if ((board[0][2] !== null) && (board[0][2] === board[1][2] && board[0][2] === board[2][2])) {
+            console.log("A 0,2 win condition was triggered");
+            return playGame.resetGame("win");
+        }        
         //extra conditonal to check when all indexes of board !null - draw is declared, game is reset
+        else if (board.every(row => row.every(cell => cell !== null))) {
+            return playGame.resetGame("draw");
+        //tell players to continue playing the game as no win has been declared yet
+        } else {
+            return false;
+        }
     }
 
     const resetBoard = () => {
@@ -78,11 +55,13 @@ const gameboard = (function () {
 const players = [
     {
         name: "playerOne",
-        symbol: "x"
+        symbol: "X",
+        wins: 0
     },
     {
         name: "playerTwo",
-        symbol: "o"
+        symbol: "O",
+        wins: 0
     }
 ];
 
@@ -91,8 +70,13 @@ const playGame = (function () {
     let playerTurn = players[0];
     
     //reset board to ensure default game state is set
-    const resetGame = () => {
-        console.log(`${playerTurn.name} Won!`);
+    const resetGame = (endCondition) => {
+        if (endCondition === "win") {
+            console.log(`${playerTurn.name} Won!`);
+            playGame.addPlayerWin();
+        } else if (endCondition === "draw") {
+            console.log(`It's a draw! If this isn't the case at the end of every single game, ${players[1].name} needs to shape up.`);
+        }
         playerTurn = players[0];
         gameboard.resetBoard();
     }
@@ -102,44 +86,31 @@ const playGame = (function () {
         //check that a row and column value are given, exits the function if not
         if (row === undefined || column === undefined) {
             console.log("Please enter both a row and column value");
-            playGame.goAgain();
+            return;
         //check that the selected cell on the gameboard is not aleady selected by a player
         } else if (gameboard.updateBoard(row, column, playerTurn.symbol) === false) {
             console.log("Not a valid entry");
-            playGame.goAgain();
+            return;
         } else {
             gameboard.updateBoard(row, column, playerTurn.symbol)
             console.log(`${playerTurn.name} chose Row ${row + 1}, Column ${column + 1} for ${playerTurn.symbol}`)
             console.log(gameboard.getBoard());
-                
-            //call checkForWin function which contains the win conditions for the game
-            if (gameboard.checkForWin()) {
-                playGame.resetGame();
+
+            if (gameboard.checkForWin() !== false) {
+                console.log("you made it");
+                return gameboard.checkForWin();
             } else {
                 playerTurn = playerTurn === players[0] ? players[1] : players[0];
                 console.log(`It is ${playerTurn.name}'s turn`);
+                console.log("next player turn was triggered");         
             }
         }
     }
-
-    const goAgain = () => {
-        return;
-    }
-
-    const declareWinner = () => {
-
-    }
-
-
     const getPlayerTurn = () => playerTurn;
-    const getGameWon = () => console.log(gameWon);
+    const addPlayerWin = () => playerTurn.wins++;
 
-    return { resetGame, playRound, getPlayerTurn, getGameWon, goAgain };
+    return { resetGame, playRound, getPlayerTurn, addPlayerWin };
 })();
-
-//call playGame.playRound(row, column)
-    //if row or column are not defined, return from function and prompt the player to go again (do not change turn)
-    //if row and column are defined, but specify a cell that has already been selected, prompt the player to go again
     
 
 
