@@ -1,5 +1,5 @@
 const gameboard = (function () {
-    let board = [["x", "q", "s"], ["a", "b", "c"], ["d", null, "f"]];
+    let board = [[null, null, null], [null, null, null], [null, null, null]];
 
     const getBoard = () => board;
 
@@ -31,10 +31,11 @@ const gameboard = (function () {
         }        
         //extra conditonal to check when all indexes of board !null - draw is declared, game is reset
         else if (board.every(row => row.every(cell => cell !== null))) {
+            console.log("tie condition triggered");
             return playGame.resetGame("draw");
         //tell players to continue playing the game as no win has been declared yet
         } else {
-            return false;
+            console.log("No win yet, keep playing");
         }
     }
 
@@ -92,13 +93,12 @@ const playGame = (function () {
             console.log("Not a valid entry");
             return;
         } else {
-            gameboard.updateBoard(row, column, playerTurn.symbol)
+            gameboard.updateBoard(row, column, playerTurn.symbol);
             console.log(`${playerTurn.name} chose Row ${row + 1}, Column ${column + 1} for ${playerTurn.symbol}`)
             console.log(gameboard.getBoard());
 
             if (gameboard.checkForWin() !== false) {
-                console.log("you made it");
-                return gameboard.checkForWin();
+                gameboard.checkForWin();
             } else {
                 playerTurn = playerTurn === players[0] ? players[1] : players[0];
                 console.log(`It is ${playerTurn.name}'s turn`);
