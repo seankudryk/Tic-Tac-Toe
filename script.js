@@ -1,16 +1,23 @@
 const gameboard = (function () {
-    let board = [["x", "x", null], [null, null, null], [null, null, null]];
+    let board = [["p", "f", "y"], ["a", "z", "s"], ["d", null, "w"]];
 
     const getBoard = () => {
         return board;
     }
+
+    // const checkForDraw = () => {
+    //     if (board.every(row => row.every(cell => cell !== null))) {
+    //         console.log(board);
+    //         console.log("It Worked!");
+    //     }
+    // }
 
     const checkForWin = () => {
        // only check for the following win conditions if cell 0, 0 has a value in it
         if (board[0][0] !== null) {
             //check for win conditions including 0, 0
             if ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[1][0] && board[0][0] === board[2][0]) || (board[0][0] === board[1][1] && board[0][0] === board[2][2])) {
-                return true;
+                return playGame.resetGame();
             } else if (board[1][0] !== null) {
                 if (board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
                     return playGame.resetGame();
@@ -41,7 +48,12 @@ const gameboard = (function () {
             if (board[0][2] === board[1][2] && board[0][2] === board[2][2]) {
                 return playGame.resetGame();
             }
-        } 
+        //check if all spaces are !null without a win conidition
+            //call draw, reset game    
+        } else if (board.every(row => row.every(cell => cell !== null))) {
+            console.log("Draw, No Winner");
+            return playGame.resetGame();
+        }
         else {
             return "No winnner yet, keep playing bozo";
         }
@@ -55,8 +67,7 @@ const gameboard = (function () {
     
     const updateBoard = (row, column, symbol) => {
         if (board[row][column] !== null) {
-            console.log("Not a valid selection");
-            return;
+            return false;
         } else {
             return board[row][column] = symbol;
         }
@@ -77,12 +88,10 @@ const players = [
 
 const playGame = (function () {
     //write function to createUser, taking a playerName input, and a playerSymbol input
-    let gameWon = false;
     let playerTurn = players[0];
     
     //reset board to ensure default game state is set
     const resetGame = () => {
-        gameWon = true;
         console.log(`${playerTurn.name} Won!`);
         playerTurn = players[0];
         gameboard.resetBoard();
@@ -90,12 +99,16 @@ const playGame = (function () {
 
     //initiate a player turn - we will call this method to "take turns" and actually play the game in console
     const playRound = (row, column) => {
+        //check that a row and column value are given, exits the function if not
         if (row === undefined || column === undefined) {
             console.log("Please enter both a row and column value");
-            return;
+            playGame.goAgain();
+        //check that the selected cell on the gameboard is not aleady selected by a player
+        } else if (gameboard.updateBoard(row, column, playerTurn.symbol) === false) {
+            console.log("Not a valid entry");
+            playGame.goAgain();
         } else {
-            //which space on the board does the player wish to place their symbol?
-            gameboard.updateBoard(row, column, playerTurn.symbol);
+            gameboard.updateBoard(row, column, playerTurn.symbol)
             console.log(`${playerTurn.name} chose Row ${row + 1}, Column ${column + 1} for ${playerTurn.symbol}`)
             console.log(gameboard.getBoard());
                 
@@ -106,20 +119,28 @@ const playGame = (function () {
                 playerTurn = playerTurn === players[0] ? players[1] : players[0];
                 console.log(`It is ${playerTurn.name}'s turn`);
             }
-                //if checkForWin, then declare winner and prompt user to play again
-
-            //once the user has placed their piece, change playerTurn to be NOT the current value of playerTurn
-            // if (gameWon = false && row && column) {
-                
-            // }
         }
     }
+
+    const goAgain = () => {
+        return;
+    }
+
+    const declareWinner = () => {
+
+    }
+
+
     const getPlayerTurn = () => playerTurn;
     const getGameWon = () => console.log(gameWon);
 
-    return { resetGame, playRound, getPlayerTurn, getGameWon };
+    return { resetGame, playRound, getPlayerTurn, getGameWon, goAgain };
 })();
 
+//call playGame.playRound(row, column)
+    //if row or column are not defined, return from function and prompt the player to go again (do not change turn)
+    //if row and column are defined, but specify a cell that has already been selected, prompt the player to go again
+    
 
 
 
