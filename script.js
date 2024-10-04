@@ -113,7 +113,7 @@ const playGame = (function () {
             }
         }
     }
-    
+
     const toggleGameFinished = () => {
         gameFinished = !gameFinished;
         console.log(`gameFinished value is now ${gameFinished}`);
@@ -123,6 +123,11 @@ const playGame = (function () {
     const addPlayerWin = () => playerTurn.wins++;
 
     return { resetGame, playRound, getPlayerTurn, addPlayerWin, toggleGameFinished };
+})();
+
+
+const displayController = (function () {
+    
 })();
     
 
