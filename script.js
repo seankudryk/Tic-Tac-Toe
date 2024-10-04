@@ -127,9 +127,22 @@ const playGame = (function () {
 
 
 const displayController = (function () {
+    const gameBoard = document.querySelector(".game-board");
     
+    const createCell = () => {
+        const addCell = document.createElement("div");
+        addCell.classList.add("board-cell"); 
+        gameBoard.appendChild(addCell);
+    }
+
+    const updateDisplay = () => {
+        for (let i = 0; i < 9; i++) {
+            createCell();
+        }
+    }
+
+    return { createCell, updateDisplay };
 })();
     
-
-
+displayController.updateDisplay();
 
