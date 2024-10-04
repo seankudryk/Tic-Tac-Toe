@@ -7,31 +7,37 @@ const gameboard = (function () {
        // only check for the following win conditions if cell 0, 0 has a value in it
         if ((board[0][0] !== null) && ((board[0][0] === board[0][1] && board[0][0] === board[0][2]) || (board[0][0] === board[1][0] && board[0][0] === board[2][0]) || (board[0][0] === board[1][1] && board[0][0] === board[2][2]))) {
             console.log("A 0,0 win condition was triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("win");
         }
         //check for win in second row
         else if ((board[1][0] !== null) && ((board[1][0] === board[1][1] && board[1][0] === board[1][2]))) {
             console.log("A 1,0 win condition was triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("win");
         }
         //check for win in third row or diagonal bottom left to top right
         else if ((board[2][0] !== null) && ((board[2][0] == board[2][1] && board[2][0] === board[2][2]) || (board[2][0] === board[1][1] && board[2][0] === board[0][2]))) { 
             console.log("A 2,0 win condition was triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("win");
         } 
         //check for win in second column
         else if ((board[0][1] !== null) && ((board[0][1] === board[1][1] && board[0][1] === board[2][1]))) {
             console.log("A 0,1 win condition was triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("win");
         }
         //check for win in third column
         else if ((board[0][2] !== null) && (board[0][2] === board[1][2] && board[0][2] === board[2][2])) {
             console.log("A 0,2 win condition was triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("win");
         }        
         //extra conditonal to check when all indexes of board !null - draw is declared, game is reset
         else if (board.every(row => row.every(cell => cell !== null))) {
             console.log("tie condition triggered");
+            playGame.toggleGameFinished();
             return playGame.resetGame("draw");
         //tell players to continue playing the game as no win has been declared yet
         } else {
@@ -69,6 +75,7 @@ const players = [
 const playGame = (function () {
     //write function to createUser, taking a playerName input, and a playerSymbol input
     let playerTurn = players[0];
+    let gameFinished = false;
     
     //reset board to ensure default game state is set
     const resetGame = (endCondition) => {
@@ -78,7 +85,8 @@ const playGame = (function () {
         } else if (endCondition === "draw") {
             console.log(`It's a draw! If this isn't the case at the end of every single game, ${players[1].name} needs to shape up.`);
         }
-        playerTurn = players[0];
+        toggleGameFinished();
+        playerTurn = players[1];
         gameboard.resetBoard();
     }
 
@@ -97,19 +105,24 @@ const playGame = (function () {
             console.log(`${playerTurn.name} chose Row ${row + 1}, Column ${column + 1} for ${playerTurn.symbol}`)
             console.log(gameboard.getBoard());
 
-            if (gameboard.checkForWin() !== false) {
-                gameboard.checkForWin();
-            } else {
+            gameboard.checkForWin();
+
+            if (gameFinished === false) {
                 playerTurn = playerTurn === players[0] ? players[1] : players[0];
-                console.log(`It is ${playerTurn.name}'s turn`);
-                console.log("next player turn was triggered");         
+                console.log(`It is ${playerTurn.name}'s turn`);   
             }
         }
     }
+    
+    const toggleGameFinished = () => {
+        gameFinished = !gameFinished;
+        console.log(`gameFinished value is now ${gameFinished}`);
+    }
+
     const getPlayerTurn = () => playerTurn;
     const addPlayerWin = () => playerTurn.wins++;
 
-    return { resetGame, playRound, getPlayerTurn, addPlayerWin };
+    return { resetGame, playRound, getPlayerTurn, addPlayerWin, toggleGameFinished };
 })();
     
 
