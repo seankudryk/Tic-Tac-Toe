@@ -47,8 +47,13 @@ const gameboard = (function () {
 
     const resetBoard = () => {
         board = [[null, null, null], [null, null, null], [null, null, null]];
+
     }
-    
+
+    const getCellValue = (row, column) => {
+        return board[row][column];
+    }
+
     const updateBoard = (row, column, symbol) => {
         if (board[row][column] !== null) {
             return false;
@@ -56,7 +61,8 @@ const gameboard = (function () {
             return board[row][column] = symbol;
         }
     }
-    return { getBoard, checkForWin, resetBoard, updateBoard };
+    
+    return { getBoard, checkForWin, resetBoard, updateBoard, getCellValue };
 })();   
 
 const players = [
@@ -92,12 +98,8 @@ const playGame = (function () {
 
     //initiate a player turn - we will call this method to "take turns" and actually play the game in console
     const playRound = (row, column) => {
-        //check that a row and column value are given, exits the function if not
-        if (row === undefined || column === undefined) {
-            console.log("Please enter both a row and column value");
-            return;
         //check that the selected cell on the gameboard is not aleady selected by a player
-        } else if (gameboard.updateBoard(row, column, playerTurn.symbol) === false) {
+        if (gameboard.updateBoard(row, column, playerTurn.symbol) === false) {
             console.log("Not a valid entry");
             return;
         } else {
@@ -142,6 +144,12 @@ const displayController = (function () {
         }
     }
 
+    const resetDisplay = () => {
+        while (gameBoard.hasChildNodes()) {
+            gameBoard.removeChild.lastChild;
+        }
+    }
+
     gameBoard.addEventListener("click", (e) => {
         let target = e.target;
         // cellMap(target);
@@ -153,28 +161,38 @@ const displayController = (function () {
     const cellMap = (target) => {
         if (target.id === "1") {
             playGame.playRound(0, 0);
+            target.innerText = gameboard.getCellValue(0, 0);
         } else if (target.id === "2") {
             playGame.playRound(0, 1);
+            target.innerText = gameboard.getCellValue(0, 1);
         } else if (target.id === "3") {
             playGame.playRound(0, 2);
+            target.innerText = gameboard.getCellValue(0, 2);
         } else if (target.id === "4") {
             playGame.playRound(1, 0);
+            target.innerText = gameboard.getCellValue(1, 0);
         } else if (target.id === "5") {
             playGame.playRound(1, 1);
+            target.innerText = gameboard.getCellValue(1, 1);
         } else if (target.id === "6") {
             playGame.playRound(1, 2);
+            target.innerText = gameboard.getCellValue(1, 2);
         } else if (target.id === "7") {
             playGame.playRound(2, 0);
+            target.innerText = gameboard.getCellValue(2, 0);
         } else if (target.id === "8") {
             playGame.playRound(2, 1);
+            target.innerText = gameboard.getCellValue(2, 1);
         } else if (target.id === "9") {
             playGame.playRound(2, 2);
+            target.innerText = gameboard.getCellValue(2, 2);
         }
     }
 
 
     
-    return { createCell, updateDisplay };
+    return { createCell, updateDisplay, resetDisplay };
 })();
 
 displayController.updateDisplay();
+displayController.resetDisplay();
