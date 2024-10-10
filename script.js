@@ -132,17 +132,38 @@ const displayController = (function () {
     const createCell = () => {
         const addCell = document.createElement("div");
         addCell.classList.add("board-cell"); 
+        // addCell.setAttribute("id", "test");
         gameBoard.appendChild(addCell);
+    }
+
+    const setCellId = (count) => {
+        let boardCells = document.querySelectorAll(".board-cell");
+        boardCells[count].setAttribute("id", count + 1);
     }
 
     const updateDisplay = () => {
         for (let i = 0; i < 9; i++) {
             createCell();
+            setCellId(i);
         }
     }
+
+    gameBoard.addEventListener("click", (e) => {
+        console.log(e.target);
+        e.target.innerText = playGame.getPlayerTurn().symbol;
+    });
+
 
     return { createCell, updateDisplay };
 })();
     
 displayController.updateDisplay();
+
+//on click, call playRound for that target cell
+    //how do i associate the row/column in the board array with the click event target?
+
+    //write some formula which can take an id from a cell and convert that value to an array index
+    //ie. click on cell with id="0" = board[0][0];
+    //id="2" = board[0][1];
+    //id="3"
 

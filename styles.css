@@ -30,5 +30,14 @@
 }
 
 .board-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: white;
+    font-size: 32px;
+    font-family: sans-serif;
+}
+
+.board-cell:hover {
+    background-color: rgb(215, 214, 214);
 }
