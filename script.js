@@ -132,7 +132,7 @@ const displayController = (function () {
     const createCell = (count) => {
         const addCell = document.createElement("div");
         addCell.classList.add("board-cell"); 
-        addCell.setAttribute("id", `${count}`);
+        addCell.setAttribute("id", `${count + 1}`);
         gameBoard.appendChild(addCell);
     }
 
@@ -143,21 +143,38 @@ const displayController = (function () {
     }
 
     gameBoard.addEventListener("click", (e) => {
-        console.log(e.target);
-        e.target.innerText = playGame.getPlayerTurn().symbol;
+        let target = e.target;
+        // cellMap(target);
+        cellMap(target);
+        // e.target.innerText = playGame.getPlayerTurn().symbol;
     });
 
+    //we will use this function to link the gameboard array indexes (which checks for win conditions and stores the actual turn data of the game) to the user interface through referencing each board cell's id value
+    const cellMap = (target) => {
+        if (target.id === "1") {
+            playGame.playRound(0, 0);
+        } else if (target.id === "2") {
+            playGame.playRound(0, 1);
+        } else if (target.id === "3") {
+            playGame.playRound(0, 2);
+        } else if (target.id === "4") {
+            playGame.playRound(1, 0);
+        } else if (target.id === "5") {
+            playGame.playRound(1, 1);
+        } else if (target.id === "6") {
+            playGame.playRound(1, 2);
+        } else if (target.id === "7") {
+            playGame.playRound(2, 0);
+        } else if (target.id === "8") {
+            playGame.playRound(2, 1);
+        } else if (target.id === "9") {
+            playGame.playRound(2, 2);
+        }
+    }
 
+
+    
     return { createCell, updateDisplay };
 })();
-    
+
 displayController.updateDisplay();
-
-//on click, call playRound for that target cell
-    //how do i associate the row/column in the board array with the click event target?
-
-    //write some formula which can take an id from a cell and convert that value to an array index
-    //ie. click on cell with id="0" = board[0][0];
-    //id="2" = board[0][1];
-    //id="3"
-
