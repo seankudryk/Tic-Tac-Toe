@@ -129,22 +129,16 @@ const playGame = (function () {
 const displayController = (function () {
     const gameBoard = document.querySelector(".game-board");
     
-    const createCell = () => {
+    const createCell = (count) => {
         const addCell = document.createElement("div");
         addCell.classList.add("board-cell"); 
-        // addCell.setAttribute("id", "test");
+        addCell.setAttribute("id", `${count}`);
         gameBoard.appendChild(addCell);
-    }
-
-    const setCellId = (count) => {
-        let boardCells = document.querySelectorAll(".board-cell");
-        boardCells[count].setAttribute("id", count + 1);
     }
 
     const updateDisplay = () => {
         for (let i = 0; i < 9; i++) {
-            createCell();
-            setCellId(i);
+            createCell(i);
         }
     }
 
