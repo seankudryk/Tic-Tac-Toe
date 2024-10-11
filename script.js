@@ -69,12 +69,14 @@ const players = [
     {
         name: "playerOne",
         symbol: "X",
-        wins: 0
+        wins: 0,
+        color: "green"
     },
     {
         name: "playerTwo",
         symbol: "O",
-        wins: 0
+        wins: 0,
+        color: "red"
     }
 ];
 
@@ -130,6 +132,13 @@ const playGame = (function () {
 
 const displayController = (function () {
     const gameBoard = document.querySelector(".game-board");
+    const submitButton = document.querySelector("#submit-button");
+    const dialog = document.querySelector("dialog");
+
+    submitButton.addEventListener("click", () => {
+        dialog.close();
+        dialog.default
+    })
     
     const createCell = (count) => {
         const addCell = document.createElement("div");
@@ -153,9 +162,7 @@ const displayController = (function () {
 
     gameBoard.addEventListener("click", (e) => {
         let target = e.target;
-        // cellMap(target);
         cellMap(target);
-        // e.target.innerText = playGame.getPlayerTurn().symbol;
     });
 
     //we will use this function to link the gameboard array indexes (which checks for win conditions and stores the actual turn data of the game) to the user interface through referencing each board cell's id value

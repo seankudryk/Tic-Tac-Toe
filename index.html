@@ -10,8 +10,18 @@
         <div class="title-div">
             <!-- <h1>Tic Tac Toe</h1> -->
         </div>
-        <!-- <button id="remove-child-button">Remove</button> -->
         <div class="game-container">
+            <div id="dialog-div">
+                <dialog open>
+                    <form>
+                        <label for="player-one-name-input">Player One:</label>
+                        <input type="text" id="player-one-name-input" name="player-two-name-input"/>
+                        <label for="player-two-name-input">Player Two:</label>
+                        <input type="text" id="player-two-name-input" name="player-two-name-input"/>
+                        <button type="submit" id="submit-button">Start Game</button>
+                    </form>
+                </dialog>
+            </div>
             <div class="game-board">
             </div>
         </div>
