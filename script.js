@@ -47,7 +47,7 @@ const gameboard = (function () {
 
     const resetBoard = () => {
         board = [[null, null, null], [null, null, null], [null, null, null]];
-
+        displayController.resetDisplay();
     }
 
     const getCellValue = (row, column) => {
@@ -145,9 +145,10 @@ const displayController = (function () {
     }
 
     const resetDisplay = () => {
-        while (gameBoard.hasChildNodes()) {
-            gameBoard.removeChild.lastChild;
+        while (gameBoard.firstChild) {
+            gameBoard.removeChild(gameBoard.firstChild);
         }
+        updateDisplay();
     }
 
     gameBoard.addEventListener("click", (e) => {
@@ -188,11 +189,8 @@ const displayController = (function () {
             target.innerText = gameboard.getCellValue(2, 2);
         }
     }
-
-
     
     return { createCell, updateDisplay, resetDisplay };
 })();
 
 displayController.updateDisplay();
-displayController.resetDisplay();
