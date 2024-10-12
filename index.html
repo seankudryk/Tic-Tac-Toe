@@ -12,17 +12,30 @@
         </div>
         <div id="input-div">
             <form>
-                <label for="player-one-name-input">Player One:</label>
-                <input type="text" id="player-one-name-input" name="player-two-name-input"/>
-                <label for="player-two-name-input">Player Two:</label>
-                <input type="text" id="player-two-name-input" name="player-two-name-input"/>
-                <button type="button" id="submit-button">Start Game</button>
+                <div id="player-input-div">
+                    <div id="player-one-div" class="player-div">
+                        <label for="player-one-name-input">PLAYER ONE:</label>
+                        <input type="text" id="player-one-name-input" name="player-two-name-input"/>
+                    </div>
+                    <div id="player-two-div" class="player-div">
+                        <label for="player-two-name-input">PLAYER TWO:</label>
+                        <input type="text" id="player-two-name-input" name="player-two-name-input"/>
+                    </div>
+                </div>
+                <div id="button-div">
+                    <button type="button" id="submit-button">Start Game</button>
+                    <button type="button" id="reset-button">Reset Game</button>
+                </div>
             </form>
         </div>
     </div>
         <div class="game-container">
             <div class="game-board">
             </div>
+        </div>
+        <div id="game-outcome-div">
+            <span id="game-outcome"></span>
+        </div>
         <script src="script.js"></script>
     </body>
 </html>
