@@ -133,11 +133,14 @@ const playGame = (function () {
 const displayController = (function () {
     const gameBoard = document.querySelector(".game-board");
     const submitButton = document.querySelector("#submit-button");
-    const dialog = document.querySelector("dialog");
+    const playerOneNameInput = document.querySelector("#player-one-name-input");
+    const playerTwoNameInput = document.querySelector("#player-two-name-input");
 
     submitButton.addEventListener("click", () => {
-        dialog.close();
-        dialog.default
+        players[0].name = playerOneNameInput.value;
+        players[1].name = playerTwoNameInput.value;
+        playerOneNameInput.value = "";
+        playerTwoNameInput.value = "";
     })
     
     const createCell = (count) => {
