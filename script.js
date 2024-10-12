@@ -70,13 +70,13 @@ const players = [
         name: "playerOne",
         symbol: "X",
         wins: 0,
-        color: "green"
+        color: "green",
     },
     {
         name: "playerTwo",
         symbol: "O",
         wins: 0,
-        color: "red"
+        color: "red",
     }
 ];
 
@@ -113,6 +113,7 @@ const playGame = (function () {
 
             if (gameFinished === false) {
                 playerTurn = playerTurn === players[0] ? players[1] : players[0];
+                displayController.updateCurrentTurn();
                 console.log(`It is ${playerTurn.name}'s turn`);   
             }
         }
@@ -123,7 +124,7 @@ const playGame = (function () {
         console.log(`gameFinished value is now ${gameFinished}`);
     }
 
-    const getPlayerTurn = () => playerTurn;
+    const getPlayerTurn = () => playerTurn.name;
     const addPlayerWin = () => playerTurn.wins++;
 
     return { resetGame, playRound, getPlayerTurn, addPlayerWin, toggleGameFinished };
@@ -135,7 +136,8 @@ const displayController = (function () {
     const submitButton = document.querySelector("#submit-button");
     const playerOneNameInput = document.querySelector("#player-one-name-input");
     const playerTwoNameInput = document.querySelector("#player-two-name-input");
-
+    const gameOutcome = document.querySelector("#game-outcome");
+    
     submitButton.addEventListener("click", () => {
         players[0].name = playerOneNameInput.value;
         players[1].name = playerTwoNameInput.value;
@@ -166,7 +168,10 @@ const displayController = (function () {
     gameBoard.addEventListener("click", (e) => {
         let target = e.target;
         cellMap(target);
+        updateCurrentTurn();
     });
+
+    const updateCurrentTurn = () => gameOutcome.innerText = `It is ${playGame.getPlayerTurn()}'s turn`;
 
     //we will use this function to link the gameboard array indexes (which checks for win conditions and stores the actual turn data of the game) to the user interface through referencing each board cell's id value
     const cellMap = (target) => {
@@ -200,7 +205,7 @@ const displayController = (function () {
         }
     }
     
-    return { createCell, updateDisplay, resetDisplay };
+    return { createCell, updateDisplay, updateCurrentTurn, resetDisplay };
 })();
 
 displayController.updateDisplay();
