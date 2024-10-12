@@ -88,9 +88,11 @@ const playGame = (function () {
     //reset board to ensure default game state is set
     const resetGame = (endCondition) => {
         if (endCondition === "win") {
+            displayController.updateGameOutcome(endCondition);
             console.log(`${playerTurn.name} Won!`);
             playGame.addPlayerWin();
         } else if (endCondition === "draw") {
+            displayController.updateGameOutcome(endCondition);
             console.log(`It's a draw! If this isn't the case at the end of every single game, ${players[1].name} needs to shape up.`);
         }
         toggleGameFinished();
@@ -136,6 +138,7 @@ const displayController = (function () {
     const submitButton = document.querySelector("#submit-button");
     const playerOneNameInput = document.querySelector("#player-one-name-input");
     const playerTwoNameInput = document.querySelector("#player-two-name-input");
+    const gameTurn = document.querySelector("#game-turn");
     const gameOutcome = document.querySelector("#game-outcome");
     
     submitButton.addEventListener("click", () => {
@@ -171,8 +174,18 @@ const displayController = (function () {
         updateCurrentTurn();
     });
 
-    const updateCurrentTurn = () => gameOutcome.innerText = `It is ${playGame.getPlayerTurn()}'s turn`;
+    const updateCurrentTurn = () => gameTurn.innerText = `It is ${playGame.getPlayerTurn()}'s turn`;
 
+    const updateGameOutcome = (winCondition) => {
+        if (winCondition === "win") {
+            gameOutcome.innerText = `${playGame.getPlayerTurn()} wins!`;
+        } else if (winCondition === "draw") {
+            gameOutcome.innerText = `It's a Draw! You are both losers!`
+        } else if (winCondition === "reset") {
+            gameOutcome.innerText = "";
+        }
+    }
+ 
     //we will use this function to link the gameboard array indexes (which checks for win conditions and stores the actual turn data of the game) to the user interface through referencing each board cell's id value
     const cellMap = (target) => {
         if (target.id === "1") {
@@ -205,7 +218,7 @@ const displayController = (function () {
         }
     }
     
-    return { createCell, updateDisplay, updateCurrentTurn, resetDisplay };
+    return { createCell, updateDisplay, updateCurrentTurn, resetDisplay, updateGameOutcome };
 })();
 
 displayController.updateDisplay();

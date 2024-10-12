@@ -16,7 +16,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
 }
 
 .game-board {
@@ -72,4 +71,13 @@ button {
 
 .board-cell:hover {
     background-color: rgb(215, 214, 214);
+}
+
+#game-outcome-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    padding: 20px;
 }
