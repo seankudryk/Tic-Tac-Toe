@@ -91,9 +91,13 @@ const playGame = (function () {
             displayController.updateGameOutcome(endCondition);
             console.log(`${playerTurn.name} Won!`);
             playGame.addPlayerWin();
+            displayController.updatePlayerScore(playerTurn);
         } else if (endCondition === "draw") {
             displayController.updateGameOutcome(endCondition);
             console.log(`It's a draw! If this isn't the case at the end of every single game, ${players[1].name} needs to shape up.`);
+        } else if (endCondition === "reset") {
+            displayController.updateGameOutcome(endCondition);
+            toggleGameFinished();
         }
         toggleGameFinished();
         playerTurn = players[1];
@@ -126,7 +130,13 @@ const playGame = (function () {
         console.log(`gameFinished value is now ${gameFinished}`);
     }
 
-    const getPlayerTurn = () => playerTurn.name;
+    const getPlayerTurn = (key) => {
+        if (key === "name") {
+            return playerTurn.name;
+        } else if (key === "wins") {
+            return playerTurn.wins;
+        }
+    }
     const addPlayerWin = () => playerTurn.wins++;
 
     return { resetGame, playRound, getPlayerTurn, addPlayerWin, toggleGameFinished };
@@ -136,16 +146,27 @@ const playGame = (function () {
 const displayController = (function () {
     const gameBoard = document.querySelector(".game-board");
     const submitButton = document.querySelector("#submit-button");
+    const resetButton = document.querySelector("#reset-button");
     const playerOneNameInput = document.querySelector("#player-one-name-input");
     const playerTwoNameInput = document.querySelector("#player-two-name-input");
     const gameTurn = document.querySelector("#game-turn");
     const gameOutcome = document.querySelector("#game-outcome");
+    const playerOneScoreName = document.querySelector("#player-one-score-name");
+    const playerTwoScoreName = document.querySelector("#player-two-score-name");
+    const playerOneScore = document.querySelector("#player-one-score");
+    const playerTwoScore = document.querySelector("#player-two-score");
     
     submitButton.addEventListener("click", () => {
         players[0].name = playerOneNameInput.value;
         players[1].name = playerTwoNameInput.value;
         playerOneNameInput.value = "";
         playerTwoNameInput.value = "";
+        playerOneScoreName.textContent = players[0].name;
+        playerTwoScoreName.textContent = players[1].name;
+    })
+
+    resetButton.addEventListener("click", () => {
+        playGame.resetGame("reset");
     })
     
     const createCell = (count) => {
@@ -168,21 +189,29 @@ const displayController = (function () {
         updateDisplay();
     }
 
+    const updatePlayerScore = (player) => {
+        if(players.indexOf(player) === 0) {
+            playerOneScore.textContent = players[0].wins;
+        } else if (players.indexOf(player) === 1) {
+            playerTwoScore.textContent = players[1].wins;
+        };
+    }
+
     gameBoard.addEventListener("click", (e) => {
         let target = e.target;
         cellMap(target);
         updateCurrentTurn();
     });
 
-    const updateCurrentTurn = () => gameTurn.innerText = `It is ${playGame.getPlayerTurn()}'s turn`;
+    const updateCurrentTurn = () => gameTurn.innerText = `It is ${playGame.getPlayerTurn("name")}'s turn`;
 
     const updateGameOutcome = (winCondition) => {
         if (winCondition === "win") {
-            gameOutcome.innerText = `${playGame.getPlayerTurn()} wins!`;
+            gameOutcome.innerText = `${playGame.getPlayerTurn("name")} wins!`;
         } else if (winCondition === "draw") {
             gameOutcome.innerText = `It's a Draw! You are both losers!`
         } else if (winCondition === "reset") {
-            gameOutcome.innerText = "";
+            gameOutcome.innerText = "The game has been reset";
         }
     }
  
@@ -218,7 +247,8 @@ const displayController = (function () {
         }
     }
     
-    return { createCell, updateDisplay, updateCurrentTurn, resetDisplay, updateGameOutcome };
+    return { createCell, updateDisplay, updateCurrentTurn, resetDisplay, updateGameOutcome, updatePlayerScore };
 })();
 
 displayController.updateDisplay();
+console.log(playGame.getPlayerTurn("index"));

@@ -8,7 +8,7 @@
 </head>
     <body>
         <div class="title-div">
-            <!-- <h1>Tic Tac Toe</h1> -->
+            <h1>Tic Tac Toe</h1>
         </div>
         <div id="input-div">
             <form>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div id="button-div">
-                    <button type="button" id="submit-button">Start Game</button>
+                    <button type="button" id="submit-button">Set Name(s)</button>
                     <button type="button" id="reset-button">Reset Game</button>
                 </div>
             </form>
@@ -36,6 +36,19 @@
         <div id="game-outcome-div">
             <span id="game-turn"></span>
             <span id="game-outcome"></span>
+        </div>
+        <div id="score-display">
+            <h2>Scoreboard</h2>
+            <div id="score-card-container">
+                <div id="player-one-score-div" class="score-div">
+                    <p id="player-one-score-name">P1:</p>
+                    <span id="player-one-score" class="score-card">0</span>
+                </div>
+                <div id="player-two-score-div" class="score-div">
+                    <p id="player-two-score-name">P2:</p>
+                    <span id="player-two-score" class="score-card">0</span>
+                </div>
+            </div>    
         </div>
         <script src="script.js"></script>
     </body>
